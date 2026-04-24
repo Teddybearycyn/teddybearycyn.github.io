@@ -24,7 +24,21 @@ export default function BlogPostPage() {
       ]).then(([targetPost, allBlogs]) => {
         setPost(targetPost);
         if (targetPost) {
-          setRelatedPosts(allBlogs.filter(p => p.id !== targetPost.id).slice(0, 3));
+          // Find posts in the same category first, then fallback to others
+          const related = allBlogs
+            .filter(p => p.id !== targetPost.id)
+            .sort((a, b) => {
+              // Primary: matching category
+              if (a.category === targetPost.category && b.category !== targetPost.category) return -1;
+              if (a.category !== targetPost.category && b.category === targetPost.category) return 1;
+              
+              // Secondary: shared keywords
+              const aKeywords = a.keywords?.filter(k => targetPost.keywords?.includes(k)).length || 0;
+              const bKeywords = b.keywords?.filter(k => targetPost.keywords?.includes(k)).length || 0;
+              return bKeywords - aKeywords;
+            })
+            .slice(0, 3);
+          setRelatedPosts(related);
         }
         setLoading(false);
       });

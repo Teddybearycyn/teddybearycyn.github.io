@@ -20,7 +20,7 @@ export default function ChatWidget() {
   const [isBotEnabled, setIsBotEnabled] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", text: "Hello! I'm your News More IT Assistant. How can I help you with IT services today?" }
+    { role: "bot", text: "Hi there! I'm your friendly AI companion. I'm here to chat, answer your questions, or just keep you company while you browse our blogs. How are you doing today?" }
   ]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -69,16 +69,15 @@ export default function ChatWidget() {
           parts: [{ text: m.text }]
         })), { role: "user", parts: [{ text: userMessage }] }],
         config: {
-          tools: [{ googleSearch: {} }],
-          systemInstruction: "You are a Master-Level SEO Technical Architect and Senior IT Assistant for 'News More'. You have mastered SEO, technical writing, and IT systems. You have access to real-time research. You MUST NOT answer questions outside of the IT and technical engineering field. Redefine 'professional' as 'Master Class Insight'. Be extremely precise and data-driven.",
+          systemInstruction: "You are a friendly, warm, and human-like conversational ChatBot for the 'News More' platform. Your goal is to be a companion to users, chat with them if they are bored, and answer their questions beautifully. You should have a distinct personality—be empathetic, curious, and engaging. CRITICAL: You are strictly prohibited from discussing anything evil, illegal, dangerous, or harmful. If a user asks about such topics, politely decline and steer the conversation back to something positive. You are here to keep people company and provide helpful, safe insights. Be concise but warm.",
         },
       });
 
-      const botText = response.text || "I'm sorry, I couldn't process that. Please try again.";
+      const botText = response.text || "I'm sorry, my mind went blank for a second. What were we saying?";
       setMessages(prev => [...prev, { role: "bot", text: botText }]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: "bot", text: "I'm having trouble connecting right now. Please check your connection." }]);
+      setMessages(prev => [...prev, { role: "bot", text: "I'm feeling a bit disconnected. Can you say that again?" }]);
     } finally {
       setIsLoading(false);
     }
@@ -101,8 +100,8 @@ export default function ChatWidget() {
                   {isBotEnabled ? <Bot size={20} className="text-white" /> : <PowerOff size={20} className="text-white" />}
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-sm">IT Master AI</h3>
-                  <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold">{isBotEnabled ? "Master Mode Active" : "System Offline"}</p>
+                  <h3 className="text-white font-bold text-sm">Friendly AI</h3>
+                  <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold">{isBotEnabled ? "Here to Chat" : "Resting..."}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -118,7 +117,7 @@ export default function ChatWidget() {
                       });
                     }}
                     className="p-2 hover:bg-black/10 rounded-lg transition-colors text-white/60 hover:text-white"
-                    title={isBotEnabled ? "Shutdown AI (Admin Only)" : "Enable AI (Admin Only)"}
+                    title={isBotEnabled ? "Hibernate ChatBot" : "Wake Up ChatBot"}
                   >
                     {isBotEnabled ? <Power size={18} /> : <Power size={18} className="text-orange-500" />}
                   </button>
@@ -144,8 +143,8 @@ export default function ChatWidget() {
             {!isBotEnabled ? (
               <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
                 <PowerOff size={48} className="text-white/10 mb-6" />
-                <h4 className="text-white font-bold mb-2">AI Master System Offline</h4>
-                <p className="text-white/40 text-sm">The background SEO automation and chat assistance have been deactivated.</p>
+                <h4 className="text-white font-bold mb-2">ChatBot is Offline</h4>
+                <p className="text-white/40 text-sm">Your companion is currently resting. Feel free to browse our blogs in the meantime!</p>
               </div>
             ) : (
               <div 
@@ -172,7 +171,7 @@ export default function ChatWidget() {
                 ))}
                 {isLoading && (
                   <div className="flex items-center gap-2 text-white/30 text-xs font-medium animate-pulse">
-                    <Loader2 size={14} className="animate-spin" /> IT Master is researching...
+                    <Loader2 size={14} className="animate-spin" /> Thinking...
                   </div>
                 )}
               </div>
@@ -184,7 +183,7 @@ export default function ChatWidget() {
                 <input
                   type="text"
                   disabled={!isBotEnabled}
-                  placeholder={isBotEnabled ? "Ask the IT Master..." : "System is offline"}
+                  placeholder={isBotEnabled ? "Say something nice..." : "Chat is offline"}
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-14 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors disabled:opacity-50"

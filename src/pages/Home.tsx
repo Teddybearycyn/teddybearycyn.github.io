@@ -17,7 +17,7 @@ export default function Home() {
     });
   }, []);
 
-  const featuredPosts = blogs.slice(0, 3);
+  const featuredPosts = blogs.slice(0, 8);
 
   return (
     <>

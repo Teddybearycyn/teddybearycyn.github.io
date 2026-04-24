@@ -484,7 +484,7 @@ Professionalism starts with a contract. It protects your business, your sanity, 
     category: "Customer Support",
     author: "News More Ops",
     date: "April 15, 2026",
-    image: "https://images.unsplash.com/photo-1522071823990-b51e1c5dd44b?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1200&q=80",
     keywords: ["building support teams", "customer support leadership", "remote support management", "support team training"],
     content: `
 # Customer Support Operations: Building and Managing World-Class Support Teams
@@ -610,7 +610,7 @@ Don't underestimate the complexity of data transfer. Use high-speed dedicated li
     category: "Engineering",
     author: "News More DevOps",
     date: "April 23, 2026",
-    image: "https://images.unsplash.com/photo-1618401471353-b98aadebc25a?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
     keywords: ["devops best practices", "CI/CD pipeline automation", "github actions vs gitlab", "automated testing at scale"],
     content: `
 # DevOps Excellence: Automating the CI/CD Pipeline for 2026
@@ -830,7 +830,7 @@ The greatest threat to an engineer is context switching. [Protecting your focus]
     category: "Engineering",
     author: "News More Infrastructure",
     date: "April 23, 2026",
-    image: "https://images.unsplash.com/photo-1667372333114-3d4031493f9c?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80",
     keywords: ["kubernetes networking guide", "CNI plugins comparison", "pod to pod communication", "service mesh vs ingress"],
     content: `
 # Kubernetes Networking Deep Dive: Solving the CNI Puzzle
@@ -882,7 +882,7 @@ Performance is a feature. Users expect lightning-fast interactions, and search e
     category: "Engineering",
     author: "News More Programming",
     date: "April 23, 2026",
-    image: "https://images.unsplash.com/photo-1518433278985-6188e73685f4?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=1200&q=80",
     keywords: ["rust programming for systems", "memory safety benefits", "rust vs cpp performance", "why learn rust 2026"],
     content: `
 # Systems Engineering with Rust: Why the Safety First Approach Wins
@@ -931,7 +931,7 @@ The "castle and moat" security model is obsolete. In 2026, we assume the network
     category: "Customer Support",
     author: "News More AI Lab",
     date: "April 23, 2026",
-    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd05a?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80",
     keywords: ["ai customer service scaling", "grounding llms in knowledge", "ai support agents 2026", "automation with empathy"],
     content: `
 # LLMs in Customer Support: Scaling Quality with AI Agents
@@ -1030,7 +1030,7 @@ The most profitable [freelance business](/#/blog/ultimate-freelancing-guide-2026
     category: "Engineering",
     author: "News More Design",
     date: "April 23, 2026",
-    image: "https://images.unsplash.com/photo-1541462608141-ad43bddee296?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80",
     keywords: ["building design systems", "component library best practices", "atomic design engineering", "design system tokens"],
     content: `
 # Scalable Design Systems: Bridging the Gap Between Design and Code
@@ -1080,7 +1080,7 @@ Ensure your app only talks to your actual servers by implementing SSL pinning, p
     category: "Engineering",
     author: "News More Careers",
     date: "April 23, 2026",
-    image: "https://images.unsplash.com/photo-1510511459019-5dee997ddfdf?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
     keywords: ["managing technical debt", "refactoring strategy", "software health metrics", "when to re-write code"],
     content: `
 # Strategic Technical Debt: When to Ship Fast and When to Refactor

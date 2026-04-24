@@ -32,7 +32,7 @@ export default function About() {
             <div className="absolute inset-0 bg-orange-600/20 blur-[100px] rounded-full group-hover:bg-orange-600/30 transition-colors" />
             <div className="relative aspect-square rounded-[60px] overflow-hidden border border-white/10 bg-white/5">
               <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=80" 
+                src="input_file_0.png" 
                 alt="News More Founder" 
                 className="w-full h-full object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-700" 
                 onError={(e) => {
