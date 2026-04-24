@@ -4,7 +4,7 @@
  */
 
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import Layout from "./components/Layout.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import Home from "./pages/Home.tsx";
@@ -18,6 +18,14 @@ import Terms from "./pages/Terms.tsx";
 export default function App() {
   return (
     <HelmetProvider>
+      <Helmet>
+        <meta name="google-adsense-account" content="ca-pub-1111265152760334" />
+        <script 
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1111265152760334" 
+          crossorigin="anonymous"
+        />
+      </Helmet>
       <Router>
         <ScrollToTop />
         <Layout>
