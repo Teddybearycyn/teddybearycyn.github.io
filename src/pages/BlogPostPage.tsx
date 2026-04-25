@@ -7,7 +7,6 @@ import SEO from "../components/SEO.tsx";
 import { cn } from "../lib/utils.ts";
 import { getBlogBySlug, getBlogs } from "../services/blogService.ts";
 import { BlogPost } from "../data/blogs.ts";
-import AdSlot from "../components/AdSlot.tsx";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -186,13 +185,6 @@ export default function BlogPostPage() {
           </div>
         </header>
 
-        {/* Ad Slot - Article Top */}
-        <AdSlot 
-          id="article-top-leaderboard" 
-          slot="article_top_banner" 
-          format="horizontal" 
-        />
-
         <div className="aspect-[21/9] rounded-[40px] overflow-hidden mb-16 bg-white/5 shadow-2xl border border-white/10">
           <img 
             src={post.image} 
@@ -263,15 +255,6 @@ export default function BlogPostPage() {
           >
             {post.content}
           </ReactMarkdown>
-
-          {/* Ad Slot - In Article */}
-          <AdSlot 
-            id="article-inline-fluid" 
-            slot="article_mid_content" 
-            format="fluid" 
-            type="in-feed"
-            className="my-12"
-          />
         </article>
 
         {/* Related Posts */}

@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { getBlogs } from "../services/blogService.ts";
 import { BlogPost } from "../data/blogs.ts";
 import SEO from "../components/SEO.tsx";
-import AdSlot from "../components/AdSlot.tsx";
 
 export default function Home() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
@@ -100,14 +99,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ad Slot - Homepage Top */}
-      <AdSlot 
-        id="home-top-display" 
-        slot="home_top_banner" 
-        format="horizontal" 
-        className="max-w-7xl px-6"
-      />
-
       {/* Stats/Value Section */}
       <section className="py-24 px-6 border-y border-white/5 bg-[#080808]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -194,15 +185,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Ad Slot - Homepage Middle */}
-      <AdSlot 
-        id="home-mid-multiplex" 
-        slot="home_mid_content" 
-        format="auto" 
-        type="multiplex"
-        className="max-w-7xl px-6"
-      />
 
       {/* Newsletter / CTA */}
       <section className="py-24 px-6 md:px-0">
