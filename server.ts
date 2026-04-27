@@ -202,6 +202,16 @@ async function startServer() {
     res.json({ message: `AI ${enabled ? 'enabled' : 'shut down'}` });
   });
 
+  app.get("/sitemap.xml", (req, res) => {
+    res.header("Content-Type", "application/xml");
+    res.sendFile(path.join(process.cwd(), "public", "sitemap.xml"));
+  });
+
+  app.get("/robots.txt", (req, res) => {
+    res.header("Content-Type", "text/plain");
+    res.sendFile(path.join(process.cwd(), "public", "robots.txt"));
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
