@@ -202,14 +202,66 @@ async function startServer() {
     res.json({ message: `AI ${enabled ? 'enabled' : 'shut down'}` });
   });
 
+  /**
+   * Market Simulation Endpoints
+   */
+  const pairs = {
+    "BTC/USDT": { lastPrice: 68000, volatility: 0.0005 },
+    "NZD/USD": { lastPrice: 0.6050, volatility: 0.0002 },
+    "EUR/USD": { lastPrice: 1.0850, volatility: 0.0001 }
+  };
+  
+  app.get("/api/trading/ticker", (req, res) => {
+    const symbol = (req.query.symbol as string) || "BTC/USDT";
+    const pair = pairs[symbol] || pairs["BTC/USDT"];
+    
+    // Simulate price movement
+    const change = pair.lastPrice * (Math.random() - 0.5) * pair.volatility;
+    pair.lastPrice += change;
+    
+    res.json({ symbol, price: pair.lastPrice.toFixed(symbol.includes("BTC") ? 2 : 5), timestamp: Date.now() });
+  });
+
+  app.get("/api/trading/history", async (req, res) => {
+    // Return some mock historical data for the chart initialization
+    const data = [];
+    const symbol = (req.query.symbol as string) || "BTC/USDT";
+    let basePrice = pairs[symbol]?.lastPrice || 68000;
+    
+    for (let i = 0; i < 50; i++) {
+      basePrice += basePrice * (Math.random() - 0.5) * 0.001;
+      data.push({
+        time: new Date(Date.now() - (50 - i) * 60000).toISOString(),
+        price: parseFloat(basePrice.toFixed(symbol.includes("BTC") ? 2 : 5))
+      });
+    }
+    res.json(data);
+  });
+
   app.get("/sitemap.xml", (req, res) => {
-    res.header("Content-Type", "application/xml");
-    res.sendFile(path.join(process.cwd(), "public", "sitemap.xml"));
+    const sitemapPath = process.env.NODE_ENV === "production" 
+      ? path.join(__dirname, "dist", "sitemap.xml")
+      : path.join(__dirname, "public", "sitemap.xml");
+    
+    if (fs.existsSync(sitemapPath)) {
+      res.header("Content-Type", "application/xml");
+      res.sendFile(sitemapPath);
+    } else {
+      res.status(404).send("Sitemap not found");
+    }
   });
 
   app.get("/robots.txt", (req, res) => {
-    res.header("Content-Type", "text/plain");
-    res.sendFile(path.join(process.cwd(), "public", "robots.txt"));
+    const robotsPath = process.env.NODE_ENV === "production"
+      ? path.join(__dirname, "dist", "robots.txt")
+      : path.join(__dirname, "public", "robots.txt");
+
+    if (fs.existsSync(robotsPath)) {
+      res.header("Content-Type", "text/plain");
+      res.sendFile(robotsPath);
+    } else {
+      res.status(404).send("Robots.txt not found");
+    }
   });
 
   // Vite middleware for development

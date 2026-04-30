@@ -1,18 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageSquare, X, Send, Bot, User, Loader2, Power, PowerOff, ShieldCheck } from "lucide-react";
+import { MessageSquare, X, Send, Bot, User, Loader2, Power, PowerOff, ShieldCheck, Search, Image as ImageIcon } from "lucide-react";
 import { GoogleGenAI } from "@google/genai";
 import { cn } from "../lib/utils.ts";
 import { isAIEnabled } from "../services/blogService.ts";
 import { auth } from "../lib/firebase.ts";
 import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-// Initialize AI
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
-
 interface Message {
   role: "user" | "bot";
   text: string;
+  grounding?: { title: string; uri: string }[];
+  image?: string;
 }
 
 export default function ChatWidget() {
@@ -24,6 +23,8 @@ export default function ChatWidget() {
   ]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,32 +53,70 @@ export default function ChatWidget() {
     }
   }, [messages]);
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputText.trim() || isLoading || !isBotEnabled) return;
+    if ((!inputText.trim() && !selectedImage) || isLoading || !isBotEnabled) return;
 
     const userMessage = inputText.trim();
+    const userImage = selectedImage;
+    
     setInputText("");
-    setMessages(prev => [...prev, { role: "user", text: userMessage }]);
+    setSelectedImage(null);
+    setMessages(prev => [...prev, { role: "user", text: userMessage, image: userImage || undefined }]);
     setIsLoading(true);
 
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [...messages.map(m => ({
-          role: m.role === "user" ? "user" : "model",
-          parts: [{ text: m.text }]
-        })), { role: "user", parts: [{ text: userMessage }] }],
+      // Re-initialize to ensure fresh environment context
+      const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+      
+      const parts: any[] = [];
+      if (userImage) {
+        parts.push({
+          inlineData: {
+            data: userImage.split(',')[1],
+            mimeType: "image/png"
+          }
+        });
+      }
+      parts.push({ text: userMessage || "Analyze this image." });
+
+      const response = await genAI.models.generateContent({
+        model: userImage ? "gemini-3.1-pro-preview" : "gemini-3-flash-preview",
+        contents: [
+          ...messages.slice(-6).map(m => ({
+            role: m.role === "user" ? "user" : "model",
+            parts: [{ text: m.text }]
+          })),
+          { role: "user", parts }
+        ],
         config: {
-          systemInstruction: "You are a friendly, warm, and human-like conversational ChatBot for the 'News More' platform. Your goal is to be a companion to users, chat with them if they are bored, and answer their questions beautifully. You should have a distinct personality—be empathetic, curious, and engaging. CRITICAL: You are strictly prohibited from discussing anything evil, illegal, dangerous, or harmful. If a user asks about such topics, politely decline and steer the conversation back to something positive. You are here to keep people company and provide helpful, safe insights. Be concise but warm.",
+          systemInstruction: "You are a friendly, warm, and human-like conversational ChatBot for the 'News More' platform. Your goal is to be a companion to users, chat with them if they are bored, and answer their questions beautifully. You should have a distinct personality—be empathetic, curious, and engaging. You can help users with research, find live news, or analyze market trends/charts if they ask. DISCLAIMER: Any financial analysis provided is for informational purposes only and is not financial advice. CRITICAL: You are strictly prohibited from discussing anything evil, illegal, dangerous, or harmful. If a user asks about such topics, politely decline and steer the conversation back to something positive. You are here to keep people company and provide helpful, safe insights. Be concise but warm.",
+          tools: [{ googleSearch: {} }]
         },
       });
 
       const botText = response.text || "I'm sorry, my mind went blank for a second. What were we saying?";
-      setMessages(prev => [...prev, { role: "bot", text: botText }]);
+      
+      const grounding = response.candidates?.[0]?.groundingMetadata?.groundingChunks?.map((chunk: any) => ({
+        title: chunk.web?.title || "Source",
+        uri: chunk.web?.uri
+      })).filter((c: any) => c.uri);
+
+      setMessages(prev => [...prev, { role: "bot", text: botText, grounding }]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: "bot", text: "I'm feeling a bit disconnected. Can you say that again?" }]);
+      setMessages(prev => [...prev, { role: "bot", text: "I'm feeling a bit disconnected. This usually happens if there's a temporary network glitch or I'm unable to process the request right now. Can you try again?" }]);
     } finally {
       setIsLoading(false);
     }
@@ -160,12 +199,33 @@ export default function ChatWidget() {
                     )}
                   >
                     <div className={cn(
-                      "px-4 py-3 rounded-2xl text-sm leading-relaxed",
+                      "px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap",
                       m.role === "user" 
                         ? "bg-orange-600 text-white rounded-br-none" 
                         : "bg-white/5 text-white/80 border border-white/10 rounded-bl-none"
                     )}>
+                      {m.image && (
+                        <img src={m.image} alt="User upload" className="w-full max-w-[200px] rounded-lg mb-2 border border-white/10" />
+                      )}
                       {m.text}
+                      {m.grounding && m.grounding.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-white/10 flex flex-col gap-2">
+                          <div className="text-[10px] uppercase tracking-wider text-white/30 flex items-center gap-1">
+                            <Search size={10} /> Sources
+                          </div>
+                          {m.grounding.map((g, gi) => (
+                            <a 
+                              key={gi} 
+                              href={g.uri} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-[11px] text-orange-400 hover:underline flex items-center gap-1 group"
+                            >
+                              {g.title} <X size={10} className="rotate-45 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </a>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -179,22 +239,51 @@ export default function ChatWidget() {
 
             {/* Input */}
             <form onSubmit={handleSubmit} className="p-6 pt-0">
-              <div className="relative">
+              {selectedImage && (
+                <div className="mb-3 relative inline-block">
+                  <img src={selectedImage} alt="Preview" className="h-16 w-16 object-cover rounded-xl border border-orange-500/50" />
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedImage(null)}
+                    className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1 border border-white/10 hover:bg-zinc-800"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              )}
+              <div className="relative flex items-center gap-2">
                 <input
-                  type="text"
-                  disabled={!isBotEnabled}
-                  placeholder={isBotEnabled ? "Say something nice..." : "Chat is offline"}
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-14 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors disabled:opacity-50"
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageSelect}
+                  accept="image/*"
+                  className="hidden"
                 />
-                <button 
-                  type="submit"
-                  disabled={!inputText.trim() || isLoading || !isBotEnabled}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 disabled:opacity-50 disabled:hover:bg-orange-600 transition-all"
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={!isBotEnabled}
+                  className="p-3 bg-white/5 border border-white/10 rounded-2xl text-white/50 hover:text-white hover:bg-white/10 transition-all"
                 >
-                  <Send size={18} />
+                  <ImageIcon size={20} />
                 </button>
+                <div className="relative flex-1">
+                  <input
+                    type="text"
+                    disabled={!isBotEnabled}
+                    placeholder={isBotEnabled ? "Say something..." : "Chat is offline"}
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-6 pr-14 py-4 text-sm focus:outline-none focus:border-orange-500 transition-colors disabled:opacity-50"
+                  />
+                  <button 
+                    type="submit"
+                    disabled={(!inputText.trim() && !selectedImage) || isLoading || !isBotEnabled}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 disabled:opacity-50 disabled:hover:bg-orange-600 transition-all"
+                  >
+                    <Send size={18} />
+                  </button>
+                </div>
               </div>
             </form>
           </motion.div>
