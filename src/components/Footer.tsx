@@ -47,6 +47,7 @@ export default function Footer() {
           <ul className="space-y-4 text-white/50 text-sm">
             <li><Link to="/privacy" className="hover:text-orange-500 transition-colors">Privacy Policy</Link></li>
             <li><Link to="/terms" className="hover:text-orange-500 transition-colors">Terms of Service</Link></li>
+            <li><Link to="/glossary" className="hover:text-orange-500 transition-colors">Intelligence Lexicon</Link></li>
             <li className="flex items-center gap-2 pt-2 text-white/80">
               <Mail size={14} className="text-orange-500" />
               <a href="mailto:info.axelionscale@gmail.com" className="text-[12px] truncate">info.axelionscale@gmail.com</a>

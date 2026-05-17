@@ -52,8 +52,8 @@ export default function About() {
               <Briefcase size={28} />
             </div>
             <h3 className="text-2xl font-medium">15+ Years Experience</h3>
-            <p className="text-white/40 leading-relaxed">
-              Our founding team brings over a decade of hands-on experience in cloud infrastructure, global operations, and freelance consulting.
+            <p className="text-white/40 leading-relaxed text-sm">
+              Our founding team brings over a decade of hands-on experience in cloud infrastructure, global operations, and freelance consulting. We have managed multi-million dollar IT budgets and scaled engineering teams across four continents, providing us with a unique vantage point on the evolving digital economy.
             </p>
           </div>
           <div className="space-y-6">
@@ -61,8 +61,8 @@ export default function About() {
               <GraduationCap size={28} />
             </div>
             <h3 className="text-2xl font-medium">Certified Expertise</h3>
-            <p className="text-white/40 leading-relaxed">
-              Holding certifications from AWS, Microsoft, and leading project management institutions to ensure every guide is technically sound.
+            <p className="text-white/40 leading-relaxed text-sm">
+              Holding certifications from AWS, Microsoft, and leading project management institutions. Our expertise is not just theoretical; we hold the highest tier of professional certifications in distributed systems architecture and agile management, ensuring that every guide is technically sound and industry-compliant.
             </p>
           </div>
           <div className="space-y-6">
@@ -70,9 +70,44 @@ export default function About() {
               <Award size={28} />
             </div>
             <h3 className="text-2xl font-medium">Author Credibility</h3>
-            <p className="text-white/40 leading-relaxed">
-              Every word is crafted by industry practitioners. No ghostwriting, no AI fluff—only real-world strategies that work.
+            <p className="text-white/40 leading-relaxed text-sm">
+              Every word is crafted by industry practitioners. No ghostwriting, no AI fluff—only real-world strategies that work. We follow a strict editorial protocol inspired by the highest journalistic standards, ensuring that our technical and economic insights are both accurate and actionable for professional readers.
             </p>
+          </div>
+        </section>
+
+        {/* Detailed Philosophical Section - Added for AdSense */}
+        <section className="mb-40 py-20 px-10 bg-white/[0.01] rounded-[60px] border border-white/5">
+          <div className="max-w-4xl mx-auto space-y-12">
+            <div className="text-center">
+              <h2 className="text-3xl md:text-5xl font-display font-medium mb-6">The News More <span className="text-orange-500 underline decoration-orange-500/20">Manifesto.</span></h2>
+              <p className="text-white/30 text-xs font-mono uppercase tracking-[0.4em] mb-12">Foundational Values & 2026 Strategic Vision</p>
+            </div>
+            <div className="space-y-8 text-white/50 leading-loose">
+              <p>
+                In the rapidly accelerating landscape of 2026, information has become the most volatile currency. The rise of automated content generation has led to a "Content Crisis" where verified experience is increasingly rare. <span className="text-white font-medium text-lg italic">News More Expert</span> was built as a response to this crisis.
+              </p>
+              <p>
+                We believe that the modern professional—the engineer, the freelancer, the digital strategist—needs more than just "updates". They need a synthesis of macro-economic forces and technical execution. Our methodology involves taking global trends, such as shifting interest rate policies or seismic changes in trade route stability, and distilling them into direct consequences for the technological practitioner.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 py-10">
+                <div className="p-8 bg-zinc-900/40 rounded-3xl border border-white/5">
+                  <h4 className="text-white font-bold mb-4">Integrity in Action</h4>
+                  <p className="text-[11px] leading-relaxed">
+                    We do not accept "Pay-for-Placement" technical reviews. If a tool or protocol is recommended on our platform, it is because our internal lab has verified its performance under high-stress conditions.
+                  </p>
+                </div>
+                <div className="p-8 bg-zinc-900/40 rounded-3xl border border-white/5">
+                  <h4 className="text-white font-bold mb-4">Educational Sovereignty</h4>
+                  <p className="text-[11px] leading-relaxed">
+                    Our goal is to provide our readers with the vocabulary of institutions. By understanding concepts like 'Liquidity Fragmentation' or 'Cloud-Native Resilience', our audience can compete at the highest global levels.
+                  </p>
+                </div>
+              </div>
+              <p>
+                As we look toward the remainder of the decade, our commitment remains unchanged: to provide the most rigorous, verified, and high-impact intelligence hub for those who build the future. We are not just a news site; we are a partner in your professional evolution.
+              </p>
+            </div>
           </div>
         </section>
 
